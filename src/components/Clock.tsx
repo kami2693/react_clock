@@ -4,12 +4,20 @@ interface Props {
   clockName: string;
 }
 
-export class Clock extends Component<Props> {
+interface State {
+  currentTime: string;
+}
+
+export class Clock extends Component<Props, State> {
   private timerId: number | null = null;
+
+  state: State = {
+    currentTime: new Date().toUTCString().slice(-12, -4),
+  };
 
   componentDidMount() {
     this.timerId = window.setInterval(() => {
-      this.forceUpdate();
+      this.setState({ currentTime: new Date().toUTCString().slice(-12, -4) });
       // eslint-disable-next-line no-console
       console.log(new Date().toUTCString().slice(-12, -4));
     }, 1000);
@@ -17,6 +25,7 @@ export class Clock extends Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     const { clockName } = this.props;
+
     if (prevProps.clockName !== clockName) {
       // eslint-disable-next-line no-console
       console.warn(`Renamed from ${prevProps.clockName} to ${clockName}`);
@@ -31,15 +40,13 @@ export class Clock extends Component<Props> {
 
   render() {
     const { clockName } = this.props;
-    const currentTime = new Date().toUTCString().slice(-12, -4);
+    const { currentTime } = this.state;
 
     return (
       <div className="Clock">
         <strong className="Clock__name">{clockName}</strong>
         {' time is '}
-        <span className="Clock__time">
-          {currentTime}
-        </span>
+        <span className="Clock__time">{currentTime}</span>
       </div>
     );
   }

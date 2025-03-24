@@ -4,6 +4,7 @@ import { Clock } from './components/Clock';
 
 function getRandomName(): string {
   const value = Date.now().toString().slice(-4);
+
   return `Clock-${value}`;
 }
 
@@ -25,8 +26,7 @@ export class App extends Component<{}, State> {
     document.addEventListener('click', this.handleClick);
 
     this.nameUpdateTimer = window.setInterval(() => {
-      const newName = getRandomName();
-      this.setState({ clockName: newName });
+      this.setState({ clockName: getRandomName() });
     }, 3300);
   }
 
@@ -59,4 +59,3 @@ export class App extends Component<{}, State> {
     );
   }
 }
-
